@@ -8,186 +8,80 @@
   <script>
     $(document).ready(function(){    
     	var options = {
-    		'cClass' : 'CHE15212',
-    		'timer' : $('.CHE15212 input[name=timer]').val(),
-    		'animation' : $('.CHE15212 input[name=animation]').val(),
-    		'timeAnimation' : $('.CHE15212 input[name=timeAnimation]').val(),
+    		'cClass' : 'normal-theme',
+    		'timer' : 9000,
+    		'animation' : 'slider',
+    		'timeAnimation' : 400,
     		'instance' : 'tvF',
     		'itens' : 1
     	}
-    	tvF = new tvFlash(options);
-    	tvF.init();
-    	clearInterval(intervaltvF);
-    	intervaltvF = null;
+    	tvDemo = new jTV(options);
+    	tvDemo.init();
     });
   </script>
   <style>
-    .CHE15212{position:relative;float:left;margin-top:20px;overflow:hidden;height:475px;border:6px solid #f8f8f8;width:640px}
-    .CHE15212 ul li{float:left;display:block;width:640px;position:relative}
-    .CHE15212 div.bgTitulo{height:55px;padding:10px 20px;bottom:-72px;background-color:#181a1e;width:600px;z-index:1;margin-top:-3px}
-    .CHE15212 ul.lista li img.destaque{float:left}
-    .CHE15212 ul li .topTitulo{width:460px;text-align:left}
-    .CHE15212 ul li .topTitulo h2 {float:left;font:normal 24px/32px arial;margin-top:2px}
-    .CHE15212 ul li .topTitulo h2 a{color:#b9c6df;padding:4px 0;font-weight: bold;}
-    .CHE15212 ul li .topTitulo p a{font-size:14px;color:#fff}
-    .CHE15212 .tvFlashNav {background: none repeat scroll 0 0 #181A1E;border-left: 1px solid #525851;bottom: 9px;float: left;height: 14px;padding: 21px 15px 20px 14px;position: absolute;right: 0;width: 116px;z-index: 3;}
-    .CHE15212 .tvFlashNav-forward-backward a,
-    .CHE15212 .tvFlashNav .slide{background:url(http://i0.ig.com/canais/arena/images/sprite-che02212.png) no-repeat}
-    .CHE15212 .tvFlashNav-forward-backward{position: absolute;width:646px;z-index: 100;}
-    .CHE15212 .tvFlashNav-forward-backward a{float:left;width:31px;height:76px;position:absolute;top:140px;text-indent:-1500em}
-    .CHE15212 .tvFlashNav-forward-backward a.voltar{background-position:0 0}
-    .CHE15212 .tvFlashNav-forward-backward a.avancar{right:6px;background-position:-32px 0}
-    .CHE15212 .tvFlashNav{float:left;border-left:1px solid #525851;width:116px;padding:21px 14px 20px 14px;height:14px;position:absolute;bottom:9px;right:0;z-index:3}
-    .CHE15212 .tvFlashNav .slide{float:left;width:13px;height:13px;font-size:0;background-position:0 -76px;margin:0 4px 0 5px}
-    .CHE15212 .tvFlashNav .slide.ativo{background-position:-16px -76px}
+    *{padding:0;margin:0;}
+    
+    .normal-theme{position:relative;margin-top:20px;overflow:hidden;height:475px;border:6px solid #f8f8f8;width:640px;border-radius:4px;}
+    .normal-theme a{color:#fff;font-family:arial;text-decoration:none;}
+    .normal-theme ul li{float:left;display:block;width:640px;position:relative}
+    .normal-theme ul li div{height:55px;padding:10px 20px;bottom:-72px;background-color:#181a1e;width:600px;z-index:1;margin-top:-3px}
+  
+    .normal-theme .navigation-forward-backward a,
+    .normal-theme .navigation .slide{background:#333;opacity:0.8}
+    .normal-theme .navigation-forward-backward{position: absolute;width:646px;z-index: 100;}
+    .normal-theme .navigation-forward-backward a{float:left;width:31px;height:50px;position:absolute;top:140px;text-align:center;padding-top:30px}
+    .normal-theme .navigation-forward-backward a.next{right:6px;border-top-left-radius: 5px;border-bottom-left-radius: 5px;}
+    .normal-theme .navigation-forward-backward a.back{border-top-right-radius: 5px;border-bottom-right-radius: 5px;}
+    
+    .normal-theme .navigation {float:left;border-left:1px solid #525851;width:116px;padding:21px 14px 20px 14px;height:14px;position:absolute;bottom:9px;right:0;z-index:3}
+    .normal-theme .navigation .slide{float:left;width:13px;height:13px;margin:0 4px 0 5px;border-radius:8px;background:#666}
+    .normal-theme .navigation .slide.active{background:#fff}
   </style>
 </head>
 <body>
-<div class="CHE15212 gd12 nomgr nomgt" id="06F43696-C708-43D6-85B4-AD15DEB171D8">
-	<input type="hidden" name="timer" value="7000">
-	<input type="hidden" name="animation" value="slider">
-	<input type="hidden" name="timeAnimation" value="1000">
-	<ul class="slider" style="width: 3840px; position: absolute; left: -1550.336px; ">
-		<li class="">
-			<a href="http://arena.ig.com.br/especiais/top10/top-10-clipes-com-videogame/n1597582103061.html">
-				<img class="destaque" width="640" height="400" alt="Top 10 - Clipes inspirados por games" src="http://i0.ig.com/bancodeimagens/8s/ef/2w/8sef2wgyk1soq522j95pb3nie.jpg">
-			</a>
-			<div class="bgTitulo">
-				<div class="topTitulo">	
-					<h2>
-          <a href="http://arena.ig.com.br/especiais/top10/top-10-clipes-com-videogame/n1597582103061.html" title="Top 10 - Clipes inspirados por games">Top 10 - Clipes inspirados por games</a>
-          </h2>
-					<div style="clear:both;"></div>
-					<p>
-						<a href="http://arena.ig.com.br/especiais/top10/top-10-clipes-com-videogame/n1597582103061.html" title="Top 10 - Clipes inspirados por games">Seleção com os mais insanos videoclipes com referências gamer</a>
-					</p>
-				</div>
-			</div>
-		</li>
-          <li class="">
-			<a href="http://arena.ig.com.br/50-grandes-jogos-para-jogar-em-2012/n1597566524488.html">
-				<img class="destaque" width="640" height="400" alt="50 grandes games para jogar em 2012" src="http://i0.ig.com/bancodeimagens/ap/9q/kw/ap9qkw5jbjhzc1p8flwydeyaj.jpg">
-			</a>
-			<div class="bgTitulo">
-				<div class="topTitulo">	
-					<h2>
-          <a href="http://arena.ig.com.br/50-grandes-jogos-para-jogar-em-2012/n1597566524488.html" title="50 grandes games para jogar em 2012">50 grandes games para jogar em 2012</a>
-          </h2>
-					<div style="clear:both;"></div>
-					<p>
-						<a href="http://arena.ig.com.br/50-grandes-jogos-para-jogar-em-2012/n1597566524488.html" title="50 grandes games para jogar em 2012">Saiba quais são e quando saem os jogos mais aguardados deste ano</a>
-					</p>
-				</div>
-			</div>
-		</li>
-          <li class="">
-			<a href="http://arena.ig.com.br/analises/wwe-12/n1597572719584.html">
-				<img class="destaque" width="640" height="400" alt="Análise: WWE'12" src="http://i0.ig.com/bancodeimagens/c7/vn/al/c7vnal2nyp8sojrsfngigzfol.jpg">
-			</a>
-			<div class="bgTitulo">
-				<div class="topTitulo">	
-					<h2>
-          <a href="http://arena.ig.com.br/analises/wwe-12/n1597572719584.html" title="Análise: WWE'12">Análise: WWE'12</a>
-          </h2>
-					<div style="clear:both;"></div>
-					<p>
-						<a href="http://arena.ig.com.br/analises/wwe-12/n1597572719584.html" title="Análise: WWE'12">Jogo de luta-livre traz customização completa e online imprevisível</a>
-					</p>
-				</div>
-			</div>
-		</li>
-          <li class="">
-			<a href="http://arena.ig.com.br/especiais/podcasts/games-on-the-rocks-57-fantasma-de-lydia-e-a-lutinha-combinada/n1597566902969.html">
-				<img class="destaque" width="640" height="400" alt="Primeiro Games on the Rocks do ano!" src="http://i0.ig.com/bancodeimagens/3l/2n/0c/3l2n0cp0s8dgpz33c3zcewuyx.jpg">
-			</a>
-			<div class="bgTitulo">
-				<div class="topTitulo">	
-					<h2>
-          <a href="http://arena.ig.com.br/especiais/podcasts/games-on-the-rocks-57-fantasma-de-lydia-e-a-lutinha-combinada/n1597566902969.html" title="Primeiro Games on the Rocks do ano!">Primeiro Games on the Rocks do ano!</a>
-          </h2>
-					<div style="clear:both;"></div>
-					<p>
-						<a href="http://arena.ig.com.br/especiais/podcasts/games-on-the-rocks-57-fantasma-de-lydia-e-a-lutinha-combinada/n1597566902969.html" title="Primeiro Games on the Rocks do ano!">Ano novo, vida nova, mas o Bagaço já está com 150 horas de Skyrim...</a>
-					</p>
-				</div>
-			</div>
-		</li>
-          <li class="">
-			<a href="http://arena.ig.com.br/melhores-games-de-2011-escolha-do-leitor/n1597563746667.html">
-				<img class="destaque" width="640" height="400" alt="Porque aqui, você decide!" src="http://i0.ig.com/bancodeimagens/cw/hw/sa/cwhwsan3z94688cgx5x6x3uyj.jpg">
-			</a>
-			<div class="bgTitulo">
-				<div class="topTitulo">	
-					<h2>
-          <a href="http://arena.ig.com.br/melhores-games-de-2011-escolha-do-leitor/n1597563746667.html" title="Porque aqui, você decide!">Porque aqui, você decide!</a>
-          </h2>
-					<div style="clear:both;"></div>
-					<p>
-						<a href="http://arena.ig.com.br/melhores-games-de-2011-escolha-do-leitor/n1597563746667.html" title="Porque aqui, você decide!">Confira os melhores jogos de 2011 votados pelos leitores do Arena</a>
-					</p>
-				</div>
-			</div>
-		</li>
-          
-	<li class="">
-			<a href="http://arena.ig.com.br/especiais/top10/top-10-clipes-com-videogame/n1597582103061.html">
-				<img class="destaque" width="640" height="400" alt="Top 10 - Clipes inspirados por games" src="http://i0.ig.com/bancodeimagens/8s/ef/2w/8sef2wgyk1soq522j95pb3nie.jpg">
-			</a>
-			<div class="bgTitulo">
-				<div class="topTitulo">	
-					<h2>
-          <a href="http://arena.ig.com.br/especiais/top10/top-10-clipes-com-videogame/n1597582103061.html" title="Top 10 - Clipes inspirados por games">Top 10 - Clipes inspirados por games</a>
-          </h2>
-					<div style="clear:both;"></div>
-					<p>
-						<a href="http://arena.ig.com.br/especiais/top10/top-10-clipes-com-videogame/n1597582103061.html" title="Top 10 - Clipes inspirados por games">Seleção com os mais insanos videoclipes com referências gamer</a>
-					</p>
-				</div>
-			</div>
-		</li></ul>
-	<nav class="tvFlashNav-forward-backward">
-		<a href="#back" class="voltar">Voltar</a>
-		<a href="#next" class="avancar">Próximo</a>
-	</nav>
-	
-	<nav class="tvFlashNav">
+  <div class="normal-theme">
+	<ul class="slider">
+	    <li>
+		<a href="http://guilhermeserrano.com.br">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/nature/">
+		</a>
 		<div>
-			<a href="#galleryClick" class="slide inativo" title="Top 10 - Clipes inspirados por games"></a>
-          <a href="#galleryClick" class="slide inativo" title="50 grandes games para jogar em 2012"></a>
-          <a href="#galleryClick" class="slide inativo" title="Análise: WWE'12"></a>
-          <a href="#galleryClick" class="slide inativo ativo" title="Primeiro Games on the Rocks do ano!"></a>
-          <a href="#galleryClick" class="slide inativo" title="Porque aqui, você decide!"></a>
-           
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
+		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
 		</div>
+	    </li>
+	    <li>
+		<a href="http://guilhermeserrano.com.br">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/transport/">
+		</a>
+		<div>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
+		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
+		</div>
+	    </li>
+	    <li>
+		<a href="http://guilhermeserrano.com.br">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/city/">
+		</a>
+		<div>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
+		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
+		</div>
+	    </li>
+        </ul>
+	<nav class="navigation-forward-backward">
+		<a href="#next" class="back"><</a>
+		<a href="#back" class="next">></a>
+		
 	</nav>
-<script type="text/javascript">
-var tvF;
-if(typeof(tvFlash) != 'function'){
-	$.getScript('http://js.ig.com/egomes/tvFlash-2.2.js');
-}
-
-
-if (typeof intervaltvF != 'undefined' && intervaltvF != null) {
-	clearInterval(intervaltvF);
-}
 	
-var intervaltvF = window.setInterval(function(){
-    if(typeof(tvFlash) === 'function'){
-    	var options = {
-    		'cClass' : 'CHE15212',
-    		'timer' : $('.CHE15212 input[name=timer]').val(),
-    		'animation' : $('.CHE15212 input[name=animation]').val(),
-    		'timeAnimation' : $('.CHE15212 input[name=timeAnimation]').val(),
-    		'instance' : 'tvF',
-    		'itens' : 1
-    	}
-    	tvF = new tvFlash(options);
-    	tvF.init();
-    	clearInterval(intervaltvF);
-    	intervaltvF = null;
-    }
-}, 1000);
-</script>
+	<nav class="navigation">
+	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
+	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
+	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
+	</nav>
+
         </div>
 </body>
 </html>
