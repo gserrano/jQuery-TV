@@ -1,5 +1,5 @@
 /*
- * jQuery LazyLoad Plugin v1.9
+ * jQuery TV Plugin v1.9
  * http://odesenvolvedor.com.br/
  *
  * Copyright 2011, Guilherme Serrano - http://guilhermeserrano.com.br
@@ -17,6 +17,9 @@
  *		'instance' : 'nome da instancia criada para a tv',
  *		'itens' : 'número de itens da li por página / default = 1'
  *	}
+ *
+ *	@todo:
+ *	- jQuery plugin :)
 */
 
 function jTV(opt){
