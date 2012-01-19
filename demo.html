@@ -7,16 +7,11 @@
   <script src="jQuery-TV.js"></script>
   <script>
     $(document).ready(function(){    
-    	var options = {
-    		'cClass' : 'normal-theme',
-    		'timer' : 9000,
-    		'animation' : 'slider',
-    		'timeAnimation' : 400,
-    		'instance' : 'tvF',
-    		'itens' : 1
-    	}
-    	tvDemo = new jTV(options);
-    	tvDemo.init();
+    	$('.normal-theme').jTV({
+	    waitForStartAutoPlay 	: 3,
+	    typeOfAnimation 		: 'fade',
+	    animationMS			: 3
+	  });
     });
   </script>
   <style>
