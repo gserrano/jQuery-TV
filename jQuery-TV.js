@@ -21,54 +21,50 @@
 
 (function($){
 	
-	var _jTV = function(options){
-		thisClass = this;
+	var jTVmethods = {
 		
-		thisClass.settings = {
+		defaults: {
 			waitForStartAutoPlay 	: 1000,
 			typeOfAnimation 	: 'slider',
-			animationMS		: 1000
-		};
-		
-		thisClass.settings = $.extend(thisClass.settings,options,{});
-		
-		thisClass.log = function(){
+			animationMS		: 1000			
+		},		
+		init: function( options ){
+			return this.each(function(){
+         
+				var _this = $(this),
+				    data = _this.data('jTV');
+				    
+				//se nao estiver setado os parametros da jTV no objeto do jQuery,
+				//faz merge com os options parametrizados
+				if( !data ){
+					_this.data('jTV', $.extend(jTVmethods.defaults,options,{}));
+				}
+
+		      });
 			
-			var el = thisClass.settings.jElement;
-			var elUniqId = '#' + el.id + '.' + el.className;
+		},
+		log: function(){
 			
-			if(window.console){
-				console.log(elUniqId,thisClass);
+			if( console.log ){
+				console.log($(this).data('jTV'))
 			}
+			
 		}
 		
-		return thisClass;		
+		
 	}
 	
+	$.fn.jTV = function(method){
+		
+		if ( jTVmethods[method] ) {
+			return jTVmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return jTVmethods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not exist on jQuery.jTV' );
+		} 
+	}
 	
-	$.fn.jTV = function(options){
-		
-		this.each(function(){
-			
-			//generates an unique id for this tvFlash
-			var instanceId = 'jTV_' + new Date().getTime() + parseInt(Math.random());
-			
-			//Adds instance ID to options
-			$.extend(options,{
-				instandeId:instanceId,
-				jElement:{
-					id		: $(this).attr('id'),
-					className 	: $(this).attr('class')
-				}
-			});
-		
-				
-			//Appends de instance to the current window			
-			window['instanceId'] = new _jTV(options);
-			window['instanceId'].log();
-		})
-			
-	}	
 })(jQuery)
 
 
