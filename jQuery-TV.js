@@ -24,54 +24,136 @@
 
 (function($){
 	
-	var _jTV = function(options){
-		thisClass = this;
+	var _jTVmethods = {
 		
-		thisClass.settings = {
-			waitForStartAutoPlay 	: 1000,
-			typeOfAnimation 	: 'slider',
-			animationMS		: 1000
-		};
-		
-		thisClass.settings = $.extend(thisClass.settings,options,{});
-		
-		thisClass.log = function(){
+		defaults: {
+			waitForStartAutoPlay 	: 0, /*Tempo para aguardar autplay em segundos*/
+			typeOfAnimation 	: 'slider', /*tipo de animacao*/
+			effectDuration		: 1, /*Tempo para execução da animação em segundos*/
+			transitionDuration	: 1, /*Tempo para transicao entre os itens em segundos*/
+			display			: 1, /*quantidade de itens a ser mostrada*/
+			start			: 1, /*posicao para comecar o carrossel*/
+			locked			: false, /*trava o carrossel durante a transicao de itens*/
+			currentPosition		: 1 /*posicao corrente do carrossel*/
+		},		
+		init: function( options ){
+			return this.each(function(){
+         
+				var _this = $(this),
+				    data = _this.data('jTV');
+				
+				
+				data = $.extend(_jTVmethods.defaults,options,{});
+				data = $.extend(data, {
+					waitForStartAutoPlay : data.waitForStartAutoPlay * 1000, /*converts secs to millis*/
+					effectDuration : data.effectDuration * 1000, /*converts secs to millis*/
+					transitionDuration : data.transitionDuration * 1000, /*converts secs to millis*/
+					total		: _this.find('> ul > li').length,
+					pages		: Math.ceil(_this.find('> ul > li').total / data.display),
+					itemWidth	: _this.find('> ul > li:eq(0)').outerWidth(true)
+				},{})
+								
+				//se nao estiver setado os parametros da jTV no objeto do jQuery,
+				//faz merge com os options parametrizados
+				if( !_this.data('jTV') ){
+					_this.data('jTV', data);
+				}
+				
+				/*goto initial position*/
+				_this.jTV('goTo',data.start);
+				
+				/*autoplay*/
+				if(data.waitForStartAutoPlay > 0){
+					
+					window.setTimeout(function(){
+						
+						var that = _this;
+						
+						/*transicao entre itens*/
+						window.setInterval(function(){
+							that.jTV('next');
+						},data.transitionDuration)		
+					},data.waitForStartAutoPlay)
+					
+				}
+				
+				/*events*/
+				_this.find(data.prevBtn).click(function(){
+					_this.jTV('prev');
+				})
+				
+				_this.find(data.nextBtn).click(function(){
+					_this.jTV('next');
+				})
+			});
 			
-			var el = thisClass.settings.jElement;
-			var elUniqId = '#' + el.id + '.' + el.className;
+		},
+		goTo:	function(pos){
 			
-			if(window.console){
-				console.log(elUniqId,thisClass);
+				var _this = $(this),
+				    data = _this.data('jTV'),
+				    index = 0;
+				    
+				    
+				if(data.locked === true)
+					return;
+						
+				data.locked = true;
+				
+				if(pos > data.total){
+					pos = 1;
+				}else if(pos <= 0){
+					pos = data.total;
+				}else{}
+				
+				
+								
+				_this.find('> ul > li').hide();
+				_this.find('> ul > li').eq(pos - 1).show();
+				
+				data.currentPosition = pos;
+				
+				data.locked = false;	
+			
+		},
+		next:	function(){
+			
+			var _this = $(this),
+			    data = _this.data('jTV'),
+			    pos = data.currentPosition + data.display;
+													
+			_this.jTV('goTo',pos);
+		},
+		prev:	function(){
+			
+			var _this = $(this),
+			    data = _this.data('jTV'),
+			    pos = data.currentPosition - data.display;
+													
+			_this.jTV('goTo',pos);
+		},
+		log: function(){
+			
+			if( console.log ){
+				console.log($(this).data('jTV'));
 			}
+			
 		}
 		
-		return thisClass;		
+		
 	}
 	
+	$.fn.jTV = function(method){
+		
+		if ( _jTVmethods[method] ) {
+			return _jTVmethods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return _jTVmethods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not exist on jQuery.jTV' );
+		}
+	}
 	
-	$.fn.jTV = function(options){
-		
-		this.each(function(){
-			
-			//generates an unique id for this tvFlash
-			var instanceId = 'jTV_' + new Date().getTime() + parseInt(Math.random());
-			
-			//Adds instance ID to options
-			$.extend(options,{
-				instandeId:instanceId,
-				jElement:{
-					id		: $(this).attr('id'),
-					className 	: $(this).attr('class')
-				}
-			});
-		
-				
-			//Appends de instance to the current window			
-			window['instanceId'] = new _jTV(options);
-			window['instanceId'].log();
-		})
-			
-	}	
 })(jQuery)
 
 
