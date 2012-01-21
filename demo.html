@@ -8,10 +8,24 @@
   <script>
     $(document).ready(function(){    
     	$('.normal-theme').jTV({
-	    waitForStartAutoPlay 	: 3,
-	    typeOfAnimation 		: 'fade',
-	    animationMS			: 3
-	  });
+	    typeOfAnimation 	: 'fade',
+	    transitionDuration	: 1,
+	    start		: 3,
+	    display		: 1,
+	    prevBtn		: '.prev',
+	    nextBtn		: '.next',
+	});
+	
+	$('.normal-theme2').jTV({
+	    typeOfAnimation 	: 'slide',
+	    waitForStartAutoPlay: 3,
+	    effectDuration	: 1,
+	    transitionDuration	: 3,
+	    start		: 1000,
+	    display		: 1,
+	    prevBtn		: '.prev',
+	    nextBtn		: '.next',
+	});
     });
   </script>
   <style>
@@ -66,7 +80,7 @@
 	    </li>
         </ul>
 	<nav class="navigation-forward-backward">
-		<a href="#next" class="back"><</a>
+		<a href="#next" class="prev"><</a>
 		<a href="#back" class="next">></a>
 		
 	</nav>
@@ -77,6 +91,50 @@
 	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
 	</nav>
 
-        </div>
+  </div>
+  
+  <div class="normal-theme2">
+	<ul class="slider">
+	    <li>
+		<a href="http://guilhermeserrano.com.br">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/nature/">
+		</a>
+		<div>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
+		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
+		</div>
+	    </li>
+	    <li>
+		<a href="http://guilhermeserrano.com.br">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/transport/">
+		</a>
+		<div>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
+		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
+		</div>
+	    </li>
+	    <li>
+		<a href="http://guilhermeserrano.com.br">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/city/">
+		</a>
+		<div>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
+		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
+		</div>
+	    </li>
+        </ul>
+	<nav class="navigation-forward-backward">
+		<a href="#next" class="prev"><</a>
+		<a href="#back" class="next">></a>
+		
+	</nav>
+	
+	<nav class="navigation">
+	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
+	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
+	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
+	</nav>
+
+  </div>
 </body>
 </html>
