@@ -27,7 +27,7 @@
 	var _jTVmethods = {
 		
 		defaults: {
-			waitForStartAutoPlay 	: 0, 		/*Tempo para aguardar autplay em segundos*/
+			waitForStartAutoPlay 	: 0, 		/*Tempo para aguardar autoplay em segundos*/
 			effectType 		: 'slide', 	/*tipo de animacao fade/slide/custom */
 			effectDuration		: 1, 		/*Tempo para execução da animação em segundos*/
 			transitionDuration	: 1, 		/*Tempo para transicao entre os itens em segundos*/
@@ -44,19 +44,16 @@
 				var _this = $(this),
 				    data = _this.data('jTV');
 				
-				
-				
-				data = $.extend(_jTVmethods.defaults,options,{});
-				data = $.extend(data, {
-					id			: 'jTV_' + new Date().getTime() + Math.random(), /*necessary for the setInterval and setTimeout*/
+				data = $.extend({},_jTVmethods.defaults,options);
+				data = $.extend({},data, {
 					waitForStartAutoPlay 	: data.waitForStartAutoPlay * 1000, /*converts secs to millis*/
 					effectDuration 		: data.effectDuration * 1000, /*converts secs to millis*/
 					transitionDuration 	: data.transitionDuration * 1000, /*converts secs to millis*/
 					total			: _this.find('> ul > li').length,
 					pages			: Math.ceil(data.total / data.display),
 					itemWidth		: _this.find('> ul > li:eq(0)').outerWidth(true)
-				},{})
-								
+				})
+
 				//se nao estiver setado os parametros da jTV no objeto do jQuery,
 				//faz merge com os options parametrizados
 				if( !_this.data('jTV') ){
@@ -77,7 +74,7 @@
 						
 						/*transicao entre itens*/
 						window[data.id+'_timeout'] = window.setInterval(function(){
-							$(window[that.id]).jTV('next');
+							that.jTV('next');
 						},data.transitionDuration)		
 					},data.waitForStartAutoPlay)
 					
@@ -109,7 +106,7 @@
 					pos = 1;
 				}else if(pos <= 0){
 					pos = data.total;
-				}else{}
+				}
 							
 				_this.jTV('doTransitionEffect', pos - 1);
 												
@@ -157,12 +154,10 @@
 					_this.find('> ul > li').eq(pos).show();
 					break;
 				case 'fade':
-					console.log('fade');
 					_this.find('> ul > li').hide();
 					_this.find('> ul > li').eq(pos).fadeIn(data.effectDuration);
 					break;
 				case 'custom':
-					console.log('custom');
 					data._this = data._this;
 									
 					/* not working - @fixme */
