@@ -27,14 +27,16 @@
 	var _jTVmethods = {
 		
 		defaults: {
-			waitForStartAutoPlay 	: 0, /*Tempo para aguardar autplay em segundos*/
-			typeOfAnimation 	: 'slider', /*tipo de animacao*/
-			effectDuration		: 1, /*Tempo para execução da animação em segundos*/
-			transitionDuration	: 1, /*Tempo para transicao entre os itens em segundos*/
-			display			: 1, /*quantidade de itens a ser mostrada*/
-			start			: 1, /*posicao para comecar o carrossel*/
-			locked			: false, /*trava o carrossel durante a transicao de itens*/
-			currentPosition		: 1 /*posicao corrente do carrossel*/
+			waitForStartAutoPlay 	: 0, 		/*Tempo para aguardar autplay em segundos*/
+			effectType 		: 'slide', 	/*tipo de animacao fade/slide/custom */
+			effectDuration		: 1, 		/*Tempo para execução da animação em segundos*/
+			transitionDuration	: 1, 		/*Tempo para transicao entre os itens em segundos*/
+			display			: 1, 		/*quantidade de itens a ser mostrada*/
+			start			: 1, 		/*posicao para comecar o carrossel*/
+			locked			: false, 	/*trava o carrossel durante a transicao de itens*/
+			currentPosition		: 1, 		/*posicao corrente do carrossel*/
+			customEffectFn		: false,	/*funcao para efeito personalizado*/
+			afterTransition		: false		/*funcao executada apos a transicao de itens*/
 		},		
 		init: function( options ){
 			return this.each(function(){
@@ -43,14 +45,16 @@
 				    data = _this.data('jTV');
 				
 				
+				
 				data = $.extend(_jTVmethods.defaults,options,{});
 				data = $.extend(data, {
-					waitForStartAutoPlay : data.waitForStartAutoPlay * 1000, /*converts secs to millis*/
-					effectDuration : data.effectDuration * 1000, /*converts secs to millis*/
-					transitionDuration : data.transitionDuration * 1000, /*converts secs to millis*/
-					total		: _this.find('> ul > li').length,
-					pages		: Math.ceil(_this.find('> ul > li').total / data.display),
-					itemWidth	: _this.find('> ul > li:eq(0)').outerWidth(true)
+					id			: 'jTV_' + new Date().getTime() + Math.random(), /*necessary for the setInterval and setTimeout*/
+					waitForStartAutoPlay 	: data.waitForStartAutoPlay * 1000, /*converts secs to millis*/
+					effectDuration 		: data.effectDuration * 1000, /*converts secs to millis*/
+					transitionDuration 	: data.transitionDuration * 1000, /*converts secs to millis*/
+					total			: _this.find('> ul > li').length,
+					pages			: Math.ceil(data.total / data.display),
+					itemWidth		: _this.find('> ul > li:eq(0)').outerWidth(true)
 				},{})
 								
 				//se nao estiver setado os parametros da jTV no objeto do jQuery,
@@ -62,16 +66,18 @@
 				/*goto initial position*/
 				_this.jTV('goTo',data.start);
 				
+				window[data.id] = _this;
+				
 				/*autoplay*/
 				if(data.waitForStartAutoPlay > 0){
 					
-					window.setTimeout(function(){
+					window[data.id+'_timeout'] = window.setTimeout(function(){
 						
 						var that = _this;
 						
 						/*transicao entre itens*/
-						window.setInterval(function(){
-							that.jTV('next');
+						window[data.id+'_timeout'] = window.setInterval(function(){
+							$(window[that.id]).jTV('next');
 						},data.transitionDuration)		
 					},data.waitForStartAutoPlay)
 					
@@ -92,8 +98,7 @@
 			
 				var _this = $(this),
 				    data = _this.data('jTV'),
-				    index = 0;
-				    
+				    index = 0;			   
 				    
 				if(data.locked === true)
 					return;
@@ -105,13 +110,14 @@
 				}else if(pos <= 0){
 					pos = data.total;
 				}else{}
-				
-				
-								
-				_this.find('> ul > li').hide();
-				_this.find('> ul > li').eq(pos - 1).show();
-				
+							
+				_this.jTV('doTransitionEffect', pos - 1);
+												
 				data.currentPosition = pos;
+				
+				if(data.afterTransition != false && typeof data.afterTransition == 'function'){
+					data.afterTransition(data);
+				}
 				
 				data.locked = false;	
 			
@@ -137,6 +143,38 @@
 			if( console.log ){
 				console.log($(this).data('jTV'));
 			}
+			
+		},
+		doTransitionEffect: function(pos){ /*index of li element*/
+			
+			var _this = $(this),
+			    data = _this.data('jTV');
+						
+			switch(data.effectType){
+				
+				case 'slide':
+					_this.find('> ul > li').hide();
+					_this.find('> ul > li').eq(pos).show();
+					break;
+				case 'fade':
+					console.log('fade');
+					_this.find('> ul > li').hide();
+					_this.find('> ul > li').eq(pos).fadeIn(data.effectDuration);
+					break;
+				case 'custom':
+					console.log('custom');
+					data._this = data._this;
+									
+					/* not working - @fixme */
+					_this.find('> ul > li').hide();
+					_this.find('> ul > li').eq(pos).show();
+					//data.customEffectFn(data,pos);
+					break;
+				default:
+					_this.find('> ul > li').hide();
+					_this.find('> ul > li').eq(pos).show();
+			}
+			
 			
 		}
 		
