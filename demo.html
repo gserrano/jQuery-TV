@@ -8,23 +8,37 @@
   <script>
     $(document).ready(function(){    
     	$('.normal-theme').jTV({
-	    typeOfAnimation 	: 'fade',
+	    effectType 	: 'fade',
 	    transitionDuration	: 1,
 	    start		: 3,
 	    display		: 1,
 	    prevBtn		: '.prev',
 	    nextBtn		: '.next',
+	    afterTransition	: function(obj){
+	      $(obj._this).find('> .navigation a')
+		.removeClass('inactive')
+		.eq(obj.currentPosition-1)
+		.addClass('active')
+	    }
 	});
 	
 	$('.normal-theme2').jTV({
-	    typeOfAnimation 	: 'slide',
+	    effectType	 	: 'slide',
 	    waitForStartAutoPlay: 3,
 	    effectDuration	: 1,
 	    transitionDuration	: 3,
-	    start		: 1000,
+	    start		: 1,
 	    display		: 1,
 	    prevBtn		: '.prev',
 	    nextBtn		: '.next',
+	    customEffectFn	: function(obj,pos){
+	      
+	      var jTV = $(obj._this);
+	      
+	      jTV.find('> ul > li').hide();
+	      jTV.find('> ul > li').eq(obj.currentPosition).show();
+	      
+	    }
 	});
     });
   </script>
