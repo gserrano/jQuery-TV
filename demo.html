@@ -17,7 +17,7 @@
 	});
 	
 	$('#sample2').jTV({
-	    effectType	 	: 'fade',
+	    effectType	 	: 'custom',
 	    waitForStartAutoPlay: 1,
 	    effectDuration	: 1,
 	    transitionDuration	: 3,
@@ -26,11 +26,11 @@
 	    prevBtn		: '.prev',
 	    nextBtn		: '.next',
 	    customEffectFn	: function(obj,pos){
-	      
-	      var jTV = $(obj._this);
-	      
+	      	      
+	      var jTV = $(obj);
+	      	      
 	      jTV.find('> ul > li').hide();
-	      jTV.find('> ul > li').eq(obj.currentPosition).show();
+	      jTV.find('> ul > li').eq(pos).show();
 	      
 	    }
 	});
@@ -112,7 +112,7 @@
 
   </div>
   
-   <div class="normal-theme2" id="sample2">
+   <div class="normal-theme" id="sample2">
 	<ul class="slider">
 	    <li>
 		<a href="http://guilhermeserrano.com.br">

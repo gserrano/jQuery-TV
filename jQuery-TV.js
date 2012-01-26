@@ -199,13 +199,8 @@
 						_this.find('> ul > li').eq(pos).fadeIn(timeIn);
 					},timeOut+100);
 					break;
-				case 'custom':
-					data._this = data._this;
-									
-					/* not working - @fixme */
-					_this.find('> ul > li').hide();
-					_this.find('> ul > li').eq(pos).show();
-					//data.customEffectFn(data,pos);
+				case 'custom':									
+					data.customEffectFn(_this,pos);
 					break;
 				default:
 					_this.find('> ul > li').hide();
