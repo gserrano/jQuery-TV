@@ -94,12 +94,14 @@
 				}
 				
 				/*events*/
-				_this.find(data.prevBtn).click(function(){
+				_this.find(data.prevBtn).click(function(e){
 					_this.jTV('prev');
+					e.preventDefault();
 				})
 				
-				_this.find(data.nextBtn).click(function(){
+				_this.find(data.nextBtn).click(function(e){
 					_this.jTV('next');
+					e.preventDefault();
 				})
 			});
 			
@@ -123,6 +125,7 @@
 				
 							
 				_this.jTV('doTransitionEffect', pos - 1);
+							
 												
 				data.currentPosition = pos;
 				
