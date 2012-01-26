@@ -58,6 +58,19 @@
 				if( !_this.data('jTV') ){
 					_this.data('jTV', data);
 				}
+
+				if(data.typeOfAnimation == 'slide'){
+					data.widthItem = _this.find('> ul > li').outerWidth(true);
+					var width = parseInt((data.total+data.display) * data.widthItem);
+					_this.find('> ul').css({'width' : width + 'px', 'position' : 'absolute'}).addClass('slider');
+					if(data.pages > 1){
+						_this.find('> ul > li').each(function(i){
+							if(i < data.display){
+								_this.find('> ul').append('<li class="' + $(this).attr('class') + '">' + $(this).html() + '</li>');
+							}
+						})
+					}
+				}
 				
 				/*goto initial position*/
 				_this.jTV('goTo',data.start);
@@ -107,10 +120,19 @@
 				}else{}
 				
 				
-								
-				_this.find('> ul > li').hide();
-				_this.find('> ul > li').eq(pos - 1).show();
-				
+				if(data.typeOfAnimation == 'fade'){
+					var timeOut = (data.effectDuration/3),
+					    timeIn = (2*(data.effectDuration/3));
+					_this.find('> ul > li').fadeOut(timeOut);
+					setTimeout(function(){
+						_this.find('> ul > li').eq(pos - 1).fadeIn(timeIn);
+					},timeOut+100);
+				}else if(data.typeOfAnimation == 'slide'){
+					
+				}else{
+					_this.find('> ul > li').hide();
+					_this.find('> ul > li').eq(pos - 1).show();
+				}
 				data.currentPosition = pos;
 				
 				data.locked = false;	
