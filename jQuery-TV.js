@@ -123,9 +123,31 @@
 					pos = data.total;
 				}else{}
 				
-							
-				_this.jTV('doTransitionEffect', pos - 1);
-							
+				
+				var nextImg = _this.find('> ul > li').eq(pos - 1).find('img'),
+				    nextImgSrc = nextImg.attr('src') || '';
+								
+				/*LazyLoad*/
+				if(typeof nextImg.data('src') != 'undefined' && nextImgSrc.search(nextImg.data('src')) == -1){
+					
+					if(_this.find('#loading').length == 0){
+						_this.append('<p id="loading">Loading ...</p>');
+					}else{
+						_this.find('#loading').show();
+					}
+					
+					/*carrega a imagem em memoria para que assim que concluida, execute os efeitos*/
+					var imgLazy = new Image();
+					imgLazy.src = nextImg.data('src');
+					imgLazy.onload = function(){
+						nextImg.attr('src',imgLazy.src);
+						_this.jTV('doTransitionEffect', pos - 1);
+						_this.find('#loading').hide();
+					}
+				}else{
+					_this.jTV('doTransitionEffect', pos - 1);
+				}
+											
 												
 				data.currentPosition = pos;
 				
