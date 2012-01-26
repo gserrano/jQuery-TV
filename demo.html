@@ -8,23 +8,31 @@
   <script>
     $(document).ready(function(){    
     	$('.normal-theme').jTV({
-	    typeOfAnimation 	: 'fade',
+	    effectType 	: 	'slide',
 	    transitionDuration	: 1,
 	    start		: 1,
 	    display		: 1,
 	    prevBtn		: '.prev',
-	    nextBtn		: '.next',
+	    nextBtn		: '.next'
 	});
 	
 	$('.normal-theme2').jTV({
-	    typeOfAnimation 	: 'slide',
-	    waitForStartAutoPlay: 3,
+	    effectType	 	: 'fade',
+	    waitForStartAutoPlay: 1,
 	    effectDuration	: 1,
 	    transitionDuration	: 3,
-	    start		: 1000,
+	    start		: 1,
 	    display		: 1,
 	    prevBtn		: '.prev',
 	    nextBtn		: '.next',
+	    customEffectFn	: function(obj,pos){
+	      
+	      var jTV = $(obj._this);
+	      
+	      jTV.find('> ul > li').hide();
+	      jTV.find('> ul > li').eq(obj.currentPosition).show();
+	      
+	    }
 	});
     });
   </script>
