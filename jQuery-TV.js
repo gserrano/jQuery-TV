@@ -50,7 +50,7 @@
 					effectDuration 		: data.effectDuration * 1000, /*converts secs to millis*/
 					transitionDuration 	: data.transitionDuration * 1000, /*converts secs to millis*/
 					total			: _this.find('> ul > li').length,
-					pages			: Math.ceil(data.total / data.display),
+					pages			: Math.ceil(_this.find('> ul > li').length / data.display),
 					itemWidth		: _this.find('> ul > li:eq(0)').outerWidth(true)
 				})
 
@@ -59,20 +59,7 @@
 				if( !_this.data('jTV') ){
 					_this.data('jTV', data);
 				}
-				if(data.typeOfAnimation == 'slide'){
-					console.log('slide!')
-					data.widthItem = _this.find('> ul > li').outerWidth(true);
-					var width = parseInt((data.total+data.display) * data.widthItem);
-					_this.find('> ul').css({'width' : width + 'px', 'position' : 'absolute'}).addClass('slider');
-					if(data.pages > 1){
-						_this.find('> ul > li').each(function(i){
-							if(i < data.display){
-								_this.find('> ul').append('<li class="' + $(this).attr('class') + '">' + $(this).html() + '</li>');
-							}
-						})
-					}
-				}
-				
+								
 				/*goto initial position*/
 				_this.jTV('goTo',data.start);
 				
@@ -108,54 +95,51 @@
 		},
 		goTo:	function(pos){
 			
-				var _this = $(this),
-				    data = _this.data('jTV'),
-				    index = 0;			   
-				    
-				if(data.locked === true)
-					return;
+			var _this = $(this),
+			    data = _this.data('jTV'),
+			    index = 0;			   
+			    
+			if(data.locked === true)
+				return;
+					
+			data.locked = true;
+			_this.data('jTV', data);
 						
-				data.locked = true;
+			if(pos > data.total){
+				pos = 1;
+			}else if(pos <= 0){
+				pos = data.total;
+			}else{}
+			
+			
+			var nextImg = _this.find('> ul > li').eq(pos - 1).find('img'),
+			    nextImgSrc = nextImg.attr('src') || '';
+							
+			/*LazyLoad*/
+			if(typeof nextImg.data('src') != 'undefined' && nextImgSrc.search(nextImg.data('src')) == -1){
 				
-				if(pos > data.total){
-					pos = 1;
-				}else if(pos <= 0){
-					pos = data.total;
-				}else{}
-				
-				
-				var nextImg = _this.find('> ul > li').eq(pos - 1).find('img'),
-				    nextImgSrc = nextImg.attr('src') || '';
-								
-				/*LazyLoad*/
-				if(typeof nextImg.data('src') != 'undefined' && nextImgSrc.search(nextImg.data('src')) == -1){
-					
-					if(_this.find('#loading').length == 0){
-						_this.append('<p id="loading">Loading ...</p>');
-					}else{
-						_this.find('#loading').show();
-					}
-					
-					/*carrega a imagem em memoria para que assim que concluida, execute os efeitos*/
-					var imgLazy = new Image();
-					imgLazy.src = nextImg.data('src');
-					imgLazy.onload = function(){
-						nextImg.attr('src',imgLazy.src);
-						_this.jTV('doTransitionEffect', pos - 1);
-						_this.find('#loading').hide();
-					}
+				if(_this.find('#loading').length == 0){
+					_this.append('<p id="loading">Loading ...</p>');
 				}else{
+					_this.find('#loading').show();
+				}
+				
+				/*carrega a imagem em memoria para que assim que concluida, execute os efeitos*/
+				var imgLazy = new Image();
+				imgLazy.src = nextImg.data('src');
+				imgLazy.onload = function(){
+					nextImg.attr('src',imgLazy.src);
 					_this.jTV('doTransitionEffect', pos - 1);
+					_this.find('#loading').hide();
 				}
-											
-												
-				data.currentPosition = pos;
-				
-				if(data.afterTransition != false && typeof data.afterTransition == 'function'){
-					data.afterTransition(data);
-				}
-				
-				data.locked = false;	
+			}else{
+				_this.jTV('doTransitionEffect', pos - 1);
+			}
+									
+			
+			if(data.afterTransition != false && typeof data.afterTransition == 'function'){
+				data.afterTransition(data);
+			}
 			
 		},
 		next:	function(){
@@ -188,8 +172,35 @@
 				
 			switch(data.effectType){
 				case 'slide':
-					_this.find('> ul > li').hide();
-					_this.find('> ul > li').eq(pos).show();
+										
+					var widthLi = _this.find('> ul > li').css('z-index',"0").outerWidth(true),
+					    el = _this.find('> ul > li').eq(pos);
+					
+					//console.log(data.currentPosition + " - " + pos);
+					//if((data.currentPosition) >= pos){
+					//	var initialLeft = widthLi;
+					//}else{
+					//	var initialLeft = (widthLi * -1);
+					//}
+					var initialLeft = widthLi;    
+					
+					el.css({
+						position: 'absolute',
+						top: 0 + 'px',
+						left: initialLeft + 'px',
+						zIndex: 1
+					});
+										
+					
+					el.animate({
+						left : 	0
+					}, 1000, function(){
+						data.locked = false;
+						data.currentPosition = pos+1;
+						_this.data('jTV', data);	
+					});
+					
+					
 					break;
 				case 'fade':
 					var timeOut = (data.effectDuration/3),
@@ -197,14 +208,25 @@
 					_this.find('> ul > li').fadeOut(timeOut);
 					setTimeout(function(){
 						_this.find('> ul > li').eq(pos).fadeIn(timeIn);
+						
+						data.locked = false;
+						data.currentPosition = pos+1;
+						_this.data('jTV', data);
 					},timeOut+100);
 					break;
 				case 'custom':									
 					data.customEffectFn(_this,pos);
+					data.locked = false;
+					data.currentPosition = pos+1;
+					_this.data('jTV', data);
+					
 					break;
 				default:
 					_this.find('> ul > li').hide();
 					_this.find('> ul > li').eq(pos).show();
+					data.locked = false;
+					data.currentPosition = pos+1;
+					_this.data('jTV', data);
 			}
 			
 			
