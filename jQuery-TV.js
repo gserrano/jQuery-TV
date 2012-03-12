@@ -36,7 +36,9 @@
 			locked			: false, 	/*trava o carrossel durante a transicao de itens*/
 			currentPosition		: 1, 		/*posicao corrente do carrossel*/
 			customEffectFn		: false,	/*funcao para efeito personalizado*/
-			afterTransition		: false		/*funcao executada apos a transicao de itens*/
+			afterTransition		: false,		/*funcao executada apos a transicao de itens*/
+			prevBtn			: '.prev',
+			nextBtn			: '.next',
 		},		
 		init: function( options ){
 			return this.each(function(){
@@ -59,12 +61,12 @@
 				if( !_this.data('jTV') ){
 					_this.data('jTV', data);
 				}
-								
+
 				/*goto initial position*/
 				_this.jTV('goTo',data.start);
-				
+
 				window[data.id] = _this;
-				
+
 				/*autoplay*/
 				if(data.waitForStartAutoPlay > 0){
 					

@@ -7,14 +7,23 @@
   <script src="jQuery-TV.js"></script>
   <script>
     $(document).ready(function(){    
-    	$('#sample1').jTV({
-	    effectType 	: 	'slide',
-	    transitionDuration	: 1,
+	$('#sample2').jTV({
+	    effectType	 	: 'custom',
+	    waitForStartAutoPlay: 1,
+	    effectDuration	: 1,
+	    transitionDuration	: 3,
 	    start		: 1,
 	    display		: 1,
 	    prevBtn		: '.prev',
 	    nextBtn		: '.next',
-	    waitForStartAutoPlay: 0
+	    customEffectFn	: function(obj,pos){
+	      	      
+	      var jTV = $(obj);
+	      	      
+	      jTV.find('> ul > li').hide();
+	      jTV.find('> ul > li').eq(pos).show();
+	      
+	    }
 	});
     });
   </script>
@@ -41,41 +50,33 @@
   </style>
 </head>
 <body>
-  <div class="normal-theme" id="sample1">
+ 
+   <div class="normal-theme" id="sample2">
 	<ul class="slider">
 	    <li>
 		<a href="http://guilhermeserrano.com.br">
-		  <img width="640" height="400" alt="jQuery TV Plugin" data-src="images/sample-1.jpg">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/nature/">
 		</a>
 		<div>
-		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">1 jQuery TV Example</a></h2>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
 		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
 		</div>
 	    </li>
 	    <li>
 		<a href="http://guilhermeserrano.com.br">
-		  <img width="640" height="400" alt="jQuery TV Plugin" data-src="images/sample-2.jpg">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/transport/">
 		</a>
 		<div>
-		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">2 jQuery TV Example</a></h2>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
 		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
 		</div>
 	    </li>
 	    <li>
 		<a href="http://guilhermeserrano.com.br">
-		  <img width="640" height="400" alt="jQuery TV Plugin" data-src="images/sample-3.jpg">
+		  <img width="640" height="400" alt="jQuery TV Plugin" src="http://lorempixel.com/640/400/city/">
 		</a>
 		<div>
-		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">3 jQuery TV Example</a></h2>
-		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
-		</div>
-	    </li>
-	    <li>
-		<a href="http://guilhermeserrano.com.br">
-		  <img width="640" height="400" alt="jQuery TV Plugin" data-src="http://farm4.staticflickr.com/3013/2646638451_344cf5b949_z.jpg?zz=1">
-		</a>
-		<div>
-		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">4 jQuery TV Example</a></h2>
+		      <h2><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">jQuery TV Example</a></h2>
 		      <p><a href="http://guilhermeserrano.com.br" title="jQuery TV Example">How to use jQuery TV? </a></p>
 		</div>
 	    </li>
@@ -83,9 +84,9 @@
 	<nav class="navigation-forward-backward">
 		<a href="#next" class="prev"><</a>
 		<a href="#back" class="next">></a>
-		
+
 	</nav>
-	
+
 	<nav class="navigation">
 	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
 	    <a href="#galleryClick" class="slide inactive" title="jQuery TV Example"></a>
@@ -93,7 +94,5 @@
 	</nav>
 
   </div>
-  
-
 </body>
 </html>
