@@ -86,12 +86,20 @@
 				_this.find(data.prevBtn).click(function(e){
 					_this.jTV('prev');
 					e.preventDefault();
-				})
+				});
 				
 				_this.find(data.nextBtn).click(function(e){
 					_this.jTV('next');
 					e.preventDefault();
-				})
+				});
+				
+				_this.find(data.navBtn).each(function(i){
+					$(this).click(function(e){
+						console.log('goto '+ (i+1))
+						_this.jTV('goTo',(i+1));
+						e.preventDefault();
+					})
+				});
 				
 				if(data.effectType == 'slide'){
 					console.log('manipula CSS para slider funcionar');
@@ -115,16 +123,18 @@
 		},
 		goTo:	function(pos){
 			
+			
 			var _this = $(this),
 			    data = _this.data('jTV'),
 			    index = 0;			   
-			    
+			
+
 			if(data.locked === true)
 				return;
 					
 			data.locked = true;
 			_this.data('jTV', data);
-						
+			
 			if(pos > data.total){
 				pos = 1;
 			}else if(pos <= 0){
@@ -237,11 +247,11 @@
 				case 'slide':
 					console.log('pos:' + pos);
 					console.log('data.currentPos:' + data.currentPosition);
-					
+					console.log('data.total:' + data.total);
 					var vleft = '-'+(pos * data.itemWidth)+'px',
 						ul = _this.find('> ul');
 					
-					if(pos > data.currentPosition){
+					if(pos > data.currentPosition && pos == (data.total-1)){
 						console.log('do primeiro para o último');
 						var vleft = '-'+((pos * data.itemWidth)-data.itemWidth) +'px';
 						
