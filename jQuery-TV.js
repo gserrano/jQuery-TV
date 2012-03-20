@@ -92,7 +92,25 @@
 					_this.jTV('next');
 					e.preventDefault();
 				})
+				
+				if(data.effectType == 'slide'){
+					console.log('manipula CSS para slider funcionar');
+					
+					var ul = _this.find('> ul').eq(0),
+						first = ul.find('> li').eq(0);
+						
+					ul.css({'width' : ((data.itemWidth*data.total)+(data.itemWidth)) + 'px', 'position' : 'absolute'});
+					
+					if(data.pages > 1){
+						var classe = (first.attr('class') == undefined) ? '' : first.attr('class');
+						ul.append('<li class="' + classe + '">' + first.html() + '</li>');
+					}
+					data.total += 1;
+					_this.data('jTV', data);
+				}
 			});
+			
+
 			
 		},
 		goTo:	function(pos){
@@ -167,30 +185,41 @@
 			}
 			
 		},
-		doTransitionEffect: function(pos){ /*index of li element*/
+		doTransitionEffect: function(pos){ /*index of next li element*/
 			
 			var _this = $(this),
 			    data = _this.data('jTV');
 				
 			switch(data.effectType){
-				case 'slide':
-										
-					var widthLi = _this.find('> ul > li').css('z-index',"0").outerWidth(true),
-					    el = _this.find('> ul > li').eq(pos);
-					
-					//console.log(data.currentPosition + " - " + pos);
-					//if((data.currentPosition) >= pos){
-					//	var initialLeft = widthLi;
-					//}else{
-					//	var initialLeft = (widthLi * -1);
-					//}
-					var initialLeft = widthLi;    
+				case 'slide-beta':
+					console.log('pos:' +pos)
+					var	el = _this.find('> ul > li').css('z-index','0').eq(pos),
+						widthLi = el.outerWidth(true);
+						
+					if(pos > (data.currentPosition-1)){
+						console.log('frente')
+						var initialLeft = widthLi;
+						if(pos == 0){
+							_this.find('> ul > li').eq(0).css('z-index','1');
+						}else{
+							el.prev().css('z-index','1');
+						}
+					}else{
+						console.log('trás')
+						var initialLeft = (widthLi * -1);
+						
+						if(pos == 0){
+							_this.find('> ul > li').eq(0).css('z-index','1');
+						}else{
+							el.next().css('z-index','1');
+						}
+					}
 					
 					el.css({
 						position: 'absolute',
 						top: 0 + 'px',
 						left: initialLeft + 'px',
-						zIndex: 1
+						zIndex: 2
 					});
 										
 					
@@ -199,11 +228,47 @@
 					}, 1000, function(){
 						data.locked = false;
 						data.currentPosition = pos+1;
-						_this.data('jTV', data);	
+						console.log('data.pos:' +data.currentPosition)
+						_this.data('jTV', data);
 					});
 					
 					
 					break;
+				case 'slide':
+					console.log('pos:' + pos);
+					console.log('data.currentPos:' + data.currentPosition);
+					
+					var vleft = '-'+(pos * data.itemWidth)+'px',
+						ul = _this.find('> ul');
+					
+					if(pos > data.currentPosition){
+						console.log('do primeiro para o último');
+						var vleft = '-'+((pos * data.itemWidth)-data.itemWidth) +'px';
+						
+						ul.css('left', '-'+((data.total * data.itemWidth)-data.itemWidth) +'px');
+						
+						ul.animate({left: vleft}, data.effectDuration, function(){
+										data.locked = false;
+										data.currentPosition = data.total-1;
+									});
+						
+					}else if(pos == data.total-1){
+						console.log('do último para o primeiro');										
+						ul.animate({left: vleft}, data.effectDuration, function(){
+										data.locked = false;
+										ul.css('left', '0');
+										data.currentPosition = 1;
+									});
+					}else{
+						ul.animate({left: vleft}, data.effectDuration, function(){
+										data.locked = false;
+										data.currentPosition = pos+1;
+									});
+					}
+					
+					
+
+				break
 				case 'fade':
 					var timeOut = (data.effectDuration/3),
 					    timeIn = (2*(data.effectDuration/3));
