@@ -38,7 +38,7 @@
 			customEffectFn		: false,	/*funcao para efeito personalizado*/
 			afterTransition		: false,		/*funcao executada apos a transicao de itens*/
 			prevBtn			: '.prev',
-			nextBtn			: '.next',
+			nextBtn			: '.next'
 		},		
 		init: function( options ){
 			return this.each(function(){
@@ -95,15 +95,13 @@
 				
 				_this.find(data.navBtn).each(function(i){
 					$(this).click(function(e){
-						console.log('goto '+ (i+1))
 						_this.jTV('goTo',(i+1));
 						e.preventDefault();
 					})
 				});
 				
 				if(data.effectType == 'slide'){
-					console.log('manipula CSS para slider funcionar');
-					
+					/* CSS to slider effect */
 					var ul = _this.find('> ul').eq(0),
 						first = ul.find('> li').eq(0);
 						
@@ -154,14 +152,23 @@
 					_this.find('#loading').show();
 				}
 				
-				/*carrega a imagem em memoria para que assim que concluida, execute os efeitos*/
-				var imgLazy = new Image();
-				imgLazy.src = nextImg.data('src');
-				imgLazy.onload = function(){
-					nextImg.attr('src',imgLazy.src);
+				/*carrega a imagemv em memoria para que assim que concluida, execute os efeitos*/
+				
+				if($.browser.msie){
+					nextImg.attr('src',nextImg.data('src'));
 					_this.jTV('doTransitionEffect', pos - 1);
 					_this.find('#loading').hide();
+				}else{
+					var imgLazy = new Image();
+					imgLazy.src = nextImg.data('src');
+					imgLazy.onload = function(){
+						nextImg.attr('src',imgLazy.src);
+						_this.jTV('doTransitionEffect', pos - 1);
+						_this.find('#loading').hide();
+					}
 				}
+						
+
 			}else{
 				_this.jTV('doTransitionEffect', pos - 1);
 			}
@@ -202,12 +209,10 @@
 				
 			switch(data.effectType){
 				case 'slide-beta':
-					console.log('pos:' +pos)
 					var	el = _this.find('> ul > li').css('z-index','0').eq(pos),
 						widthLi = el.outerWidth(true);
 						
 					if(pos > (data.currentPosition-1)){
-						console.log('frente')
 						var initialLeft = widthLi;
 						if(pos == 0){
 							_this.find('> ul > li').eq(0).css('z-index','1');
@@ -215,7 +220,6 @@
 							el.prev().css('z-index','1');
 						}
 					}else{
-						console.log('trás')
 						var initialLeft = (widthLi * -1);
 						
 						if(pos == 0){
@@ -238,21 +242,16 @@
 					}, 1000, function(){
 						data.locked = false;
 						data.currentPosition = pos+1;
-						console.log('data.pos:' +data.currentPosition)
 						_this.data('jTV', data);
 					});
 					
 					
 					break;
 				case 'slide':
-					console.log('pos:' + pos);
-					console.log('data.currentPos:' + data.currentPosition);
-					console.log('data.total:' + data.total);
 					var vleft = '-'+(pos * data.itemWidth)+'px',
 						ul = _this.find('> ul');
 					
 					if(pos > data.currentPosition && pos == (data.total-1)){
-						console.log('do primeiro para o último');
 						var vleft = '-'+((pos * data.itemWidth)-data.itemWidth) +'px';
 						
 						ul.css('left', '-'+((data.total * data.itemWidth)-data.itemWidth) +'px');
@@ -262,8 +261,7 @@
 										data.currentPosition = data.total-1;
 									});
 						
-					}else if(pos == data.total-1){
-						console.log('do último para o primeiro');										
+					}else if(pos == data.total-1){									
 						ul.animate({left: vleft}, data.effectDuration, function(){
 										data.locked = false;
 										ul.css('left', '0');
