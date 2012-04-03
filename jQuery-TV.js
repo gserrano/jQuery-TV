@@ -142,7 +142,10 @@
 			
 			var nextImg = _this.find('> ul > li').eq(pos - 1).find('img'),
 			    nextImgSrc = nextImg.attr('src') || '';
-							
+			
+			_this.find('> .navigation > a').removeClass('active').addClass('inactive');
+			_this.find('> .navigation > a').eq(pos - 1).removeClass('inactive').addClass('active');
+			
 			/*LazyLoad*/
 			if(typeof nextImg.data('src') != 'undefined' && nextImgSrc.search(nextImg.data('src')) == -1){
 				
